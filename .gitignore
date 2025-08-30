@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # dependencies
 node_modules/
 
@@ -15,3 +16,8 @@ build/
 
 # editors
 .vscode/
+=======
+node_modules/
+.vscode/
+.env
+>>>>>>> ecfd0996bce17d9626431c9f07a6eded7ab2a648
