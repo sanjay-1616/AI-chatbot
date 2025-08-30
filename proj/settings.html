@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerBot Settings</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .settings-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        .tab-content {
+            padding: 20px 0;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .knowledge-field {
+            margin-bottom: 2rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>CareerBot Settings</h1>
+            <div class="header-btns">
+                <a href="start-chat.html" class="btn btn-primary">Back to Chat</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="settings-container">
+        <ul class="nav nav-tabs" id="settingsTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab">General</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="personality-tab" data-bs-toggle="tab" data-bs-target="#personality" type="button" role="tab">Personality</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="knowledge-tab" data-bs-toggle="tab" data-bs-target="#knowledge" type="button" role="tab">Knowledge Base</button>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="settingsTabContent">
+            <div class="tab-pane fade show active" id="general" role="tabpanel">
+                <h3>General Settings</h3>
+                <form id="generalForm">
+                    <div class="form-group">
+                        <label for="model">AI Model</label>
+                        <select class="form-control" id="model">
+                            <option value="llama3.2">Llama 3.2</option>
+                            <option value="gpt4">GPT-4</option>
+                            <option value="claude3">Claude 3</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="endpoint">API Endpoint</label>
+                        <input type="text" class="form-control" id="endpoint">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="temperature">Temperature</label>
+                                <input type="range" class="form-range" id="temperature" min="0" max="1" step="0.1">
+                                <span id="temperatureValue">0.7</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="maxTokens">Max Tokens</label>
+                                <input type="number" class="form-control" id="maxTokens">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="topP">Top P</label>
+                                <input type="range" class="form-range" id="topP" min="0" max="1" step="0.1">
+                                <span id="topPValue">0.9</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="tab-pane fade" id="personality" role="tabpanel">
+                <h3>Personality Settings</h3>
+                <form id="personalityForm">
+                    <div class="form-group">
+                        <label for="botName">Bot Name</label>
+                        <input type="text" class="form-control" id="botName">
+                    </div>
+                    <div class="form-group">
+                        <label for="personality">Personality Type</label>
+                        <select class="form-control" id="personality">
+                            <option value="friendly">Friendly</option>
+                            <option value="professional">Professional</option>
+                            <option value="casual">Casual</option>
+                            <option value="encouraging">Encouraging</option>
+                            <option value="analytical">Analytical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="formality">Formality Level</label>
+                        <select class="form-control" id="formality">
+                            <option value="formal">Formal</option>
+                            <option value="balanced">Balanced</option>
+                            <option value="casual">Casual</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="systemPrompt">System Prompt</label>
+                        <textarea class="form-control" id="systemPrompt" rows="6"></textarea>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="tab-pane fade" id="knowledge" role="tabpanel">
+                <h3>Knowledge Base</h3>
+                <div id="knowledgeBaseContainer">
+                    <!-- Knowledge fields will be dynamically added here -->
+                </div>
+                <button type="button" class="btn btn-outline-primary" id="addFieldBtn">Add New Field</button>
+            </div>
+        </div>
+        
+        <div class="text-end mt-4">
+            <button type="button" class="btn btn-primary" id="saveSettings">Save Settings</button>
+            <button type="button" class="btn btn-secondary" id="resetSettings">Reset to Defaults</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            
+            // Range input event listeners
+            document.getElementById('temperature').addEventListener('input', function() {
+                document.getElementById('temperatureValue').textContent = this.value;
+            });
+            
+            document.getElementById('topP').addEventListener('input', function() {
+                document.getElementById('topPValue').textContent = this.value;
+            });
+            
+            // Add new knowledge field
+            document.getElementById('addFieldBtn').addEventListener('click', addKnowledgeField);
+            
+            // Save settings
+            document.getElementById('saveSettings').addEventListener('click', saveSettings);
+            
+            // Reset settings
+            document.getElementById('resetSettings').addEventListener('click', loadDefaultSettings);
+        });
+        
+        function loadSettings() {
+            fetch('data.json')
+                .then(response => response.json())
+                .then(data => {
+                    // General settings
+                    document.getElementById('model').value = data.model || 'llama3.2';
+                    document.getElementById('endpoint').value = data.endpoint || 'http://localhost:11434/api/generate';
+                    document.getElementById('temperature').value = data.temperature || 0.7;
+                    document.getElementById('temperatureValue').textContent = data.temperature || 0.7;
+                    document.getElementById('maxTokens').value = data.maxTokens || 2048;
+                    document.getElementById('topP').value = data.topP || 0.9;
+                    document.getElementById('topPValue').textContent = data.topP || 0.9;
+                    
+                    // Personality settings
+                    document.getElementById('botName').value = data.botName || 'CareerBot';
+                    document.getElementById('personality').value = data.personality || 'friendly';
+                    document.getElementById('formality').value = data.formality || 'balanced';
+                    document.getElementById('systemPrompt').value = data.systemPrompt || '';
+                    
+                    // Knowledge base
+                    const container = document.getElementById('knowledgeBaseContainer');
+                    container.innerHTML = '';
+                    
+                    if (data.knowledgeBase) {
+                        Object.entries(data.knowledgeBase).forEach(([field, content]) => {
+                            addKnowledgeField(field, content);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading settings:', error);
+                    loadDefaultSettings();
+                });
+        }
+        
+        function loadDefaultSettings() {
+            // Set default values
+            document.getElementById('model').value = 'llama3.2';
+            document.getElementById('endpoint').value = 'http://localhost:11434/api/generate';
+            document.getElementById('temperature').value = 0.7;
+            document.getElementById('temperatureValue').textContent = 0.7;
+            document.getElementById('maxTokens').value = 2048;
+            document.getElementById('topP').value = 0.9;
+            document.getElementById('topPValue').textContent = 0.9;
+            
+            document.getElementById('botName').value = 'CareerBot';
+            document.getElementById('personality').value = 'friendly';
+            document.getElementById('formality').value = 'balanced';
+            document.getElementById('systemPrompt').value = 'You are CareerBot, an AI assistant specialized in educational and career guidance.';
+            
+            const container = document.getElementById('knowledgeBaseContainer');
+            container.innerHTML = '';
+            
+            // Add default fields
+            addKnowledgeField('computer_science', {
+                description: 'The study of computers and computing technologies',
+                careers: 'Software Developer, Data Scientist, Network Engineer',
+                skills: 'Programming, Problem-solving, Logical thinking',
+                courseTopics: 'Algorithms, Data Structures, Databases'
+            });
+        }
+        
+        function addKnowledgeField(fieldName = '', content = {}) {
+            const container = document.getElementById('knowledgeBaseContainer');
+            const fieldId = `field_${Date.now()}`;
+            
+            const fieldDiv = document.createElement('div');
+            fieldDiv.className = 'knowledge-field';
+            fieldDiv.dataset.fieldId = fieldId;
+            
+            fieldDiv.innerHTML = `
+                <div class="d-flex justify-content-between mb-2">
+                    <input type="text" class="form-control field-name" placeholder="Field Name" value="${typeof fieldName === 'string' ? fieldName : ''}">
+                    <button type="button" class="btn btn-danger ms-2 remove-field">Remove</button>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control field-description" rows="2">${content.description || ''}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Careers</label>
+                    <textarea class="form-control field-careers" rows="2">${content.careers || ''}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Skills</label>
+                    <textarea class="form-control field-skills" rows="2">${content.skills || ''}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Course Topics</label>
+                    <textarea class="form-control field-topics" rows="2">${content.courseTopics || ''}</textarea>
+                </div>
+            `;
+            
+            container.appendChild(fieldDiv);
+            
+            // Add remove button event listener
+            fieldDiv.querySelector('.remove-field').addEventListener('click', function() {
+                container.removeChild(fieldDiv);
+            });
+        }
+        
+        function saveSettings() {
+            const settings = {
+                // General settings
+                model: document.getElementById('model').value,
+                endpoint: document.getElementById('endpoint').value,
+                temperature: parseFloat(document.getElementById('temperature').value),
+                maxTokens: parseInt(document.getElementById('maxTokens').value),
+                topP: parseFloat(document.getElementById('topP').value),
+                
+                // Personality settings
+                botName: document.getElementById('botName').value,
+                personality: document.getElementById('personality').value,
+                formality: document.getElementById('formality').value,
+                systemPrompt: document.getElementById('systemPrompt').value,
+                
+                // Knowledge base
+                knowledgeBase: {}
+            };
+            
+            // Collect knowledge base data
+            document.querySelectorAll('.knowledge-field').forEach(field => {
+                const fieldName = field.querySelector('.field-name').value.trim();
+                if (fieldName) {
+                    settings.knowledgeBase[fieldName] = {
+                        description: field.querySelector('.field-description').value,
+                        careers: field.querySelector('.field-careers').value,
+                        skills: field.querySelector('.field-skills').value,
+                        courseTopics: field.querySelector('.field-topics').value
+                    };
+                }
+            });
+            
+            // Save to JSON file
+            const jsonData = JSON.stringify(settings, null, 2);
+            
+            // Use fetch to save the data
+            fetch('save-settings.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: jsonData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Settings saved successfully!');
+                } else {
+                    alert('Error saving settings: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error saving settings. Please check console for details.');
+                
+                // Fallback: Display the JSON for manual saving
+                console.log('Settings JSON:', jsonData);
+                const blob = new Blob([jsonData], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'data.json';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+    </script>
+</body>
+</html> 

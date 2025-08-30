@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Explore - CareerBot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #3a7bd5;
+      --primary-dark: #2d62ac;
+      --secondary: #00c6ff;
+      --dark: #1c2331;
+      --light: #f8f9fa;
+      --gray: #6c757d;
+      --gray-light: #e9ecef;
+      --gray-dark: #343a40;
+      --success: #28a745;
+      --blue-gray: #f0f4f8;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f8f9fa;
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: white;
+      border-bottom: 1px solid var(--gray-light);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      color: var(--dark);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .search-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .search-box {
+      padding: 10px 15px 10px 40px;
+      border-radius: 8px;
+      border: 1px solid var(--gray-light);
+      background: white;
+      color: var(--dark);
+      font-size: 15px;
+      width: 100%;
+      outline: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-box:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      color: var(--gray);
+      font-size: 16px;
+    }
+
+    .main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .domain {
+      margin-bottom: 3rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+
+    .domain-header {
+      background: var(--primary);
+      padding: 1rem 1.5rem;
+      position: relative;
+    }
+
+    .domain h2 {
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .domain h2 i {
+      margin-right: 10px;
+      font-size: 1.25rem;
+    }
+
+    .domain-content {
+      padding: 1.5rem;
+    }
+
+    .courses {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .course {
+      background: var(--blue-gray);
+      padding: 1rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      border-left: 4px solid var(--primary);
+    }
+
+    .course:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      background: white;
+    }
+
+    .course a {
+      color: var(--dark);
+      text-decoration: none;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .course a:hover {
+      color: var(--primary);
+    }
+
+    .course a i {
+      color: var(--primary);
+      opacity: 0;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+
+    .course:hover a i {
+      opacity: 1;
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: white;
+      color: var(--primary);
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      border: 1px solid var(--primary);
+      transition: all 0.3s ease;
+      margin-bottom: 1.5rem;
+    }
+
+    .back-button:hover {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+      }
+
+      .search-container {
+        max-width: 100%;
+      }
+
+      .main {
+        padding: 1rem;
+      }
+
+      .courses {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 35px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <img src="4712109.png" alt="CareerBot Logo" class="logo">
+      <h1>Career Paths After 12th/PUC</h1>
+    </div>
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" class="search-box" id="search-box" placeholder="Search courses..." />
+    </div>
+  </header>
+
+  <div class="main">
+    <a href="welcome.html" class="back-button">
+      <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+
+    <div class="domain">
+      <div class="domain-header">
+        <h2><i class="fas fa-heartbeat"></i> Medical Courses (5 Years)</h2>
+      </div>
+      <div class="domain-content">
+        <div class="courses">
+          <div class="course"><a href="allopathy.html">MBBS - Allopathy <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bums.html">BUMS - Unani Medicine <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="homeopathy.html">BHMS - Homeopathy <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bams.html">BAMS - Ayurveda <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bsms.html">BSMS - Siddha Medicine <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bnys.html">BNYS - Naturopathy & Yogic Sciences <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bvsc.html">BVSc & AH - Veterinary Science <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bds.html">BDS - Bachelor of Dental Surgery <i class="fas fa-chevron-right"></i></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="domain">
+      <div class="domain-header">
+        <h2><i class="fas fa-user-md"></i> Allied Health Sciences / Paramedical</h2>
+      </div>
+      <div class="domain-content">
+        <div class="courses">
+          <div class="course"><a href="bpt.html">BPT - Bachelor of Physiotherapy <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bot.html">BOT - Bachelor of Occupational Therapy <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bpharm.html">B.Pharm - Bachelor of Pharmacy <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bsc-nursing.html">B.Sc. Nursing <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bph.html">Bachelor of Public Health (BPH) <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bsc-anesthesia.html">B.Sc. in Anesthesia Technology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bsc-cardiac.html">B.Sc. in Cardiac Technology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bsc-imaging.html">B.Sc. in Imaging Technology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bsc-mlt.html">B.Sc. in Medical Laboratory Technology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bsc-ott.html">B.Sc. in Operation Theatre Technology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bsc-perfusion.html">B.Sc. in Perfusion Technology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bsc-radiotherapy.html">B.Sc. in Radiotherapy Technology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bsc-renal-dialysis.html">B.Sc. in Renal Dialysis Technology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bsc-respiratory-care.html">B.Sc. in Respiratory Care Technology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="dialysis-technician.html">Dialysis Technician <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="medical-ecg-technician.html">Medical Lab & ECG Technician <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="dental-technician.html">Dental Technician <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="medical-records-technician.html">Medical Records Tech <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="xray-technician.html">X-Ray Technician <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="ophthalmic-assistant.html">Ophthalmic Assistant <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="ott.html">Operation Theatre Technician <i class="fas fa-chevron-right"></i></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="domain">
+      <div class="domain-header">
+        <h2><i class="fas fa-cogs"></i> Engineering Courses (4 Years)</h2>
+      </div>
+      <div class="domain-content">
+        <div class="courses">
+          <div class="course"><a href="aero.html">Aeronautical Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="space.html">Aerospace Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="agri.html">Agricultural Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="archi.html">Architecture Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="auto.html">Automobile Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="auro.html">Automation & Robotics <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="avi.html">Avionics Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bm.html">Biomedical Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bt.html">Biotech Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="ce.html">Civil Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="che.html">Chemical Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="cer.html">Ceramic Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="cs.html">Computer Science Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="ctm.html">Construction Tech Mgmt <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="ece.html">Electronics & Communication <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="eee.html">Electrical & Electronics <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="envi.html">Environmental Science <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="isc.html">Information Science <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="indu.html">Industrial Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="pro.html">Production Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="inst.html">Instrumentation Tech <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="marine.html">Marine Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="mech.html">Mechanical Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="mini.html">Mining Engineering <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="manu.html">Manufacturing Science <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="naval.html">Naval Architecture <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="poly.html">Polymer Technology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="silk.html">Silk Technology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="carpet.html">Carpet Technology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="textile.html">Textile Engineering <i class="fas fa-chevron-right"></i></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="domain">
+      <div class="domain-header">
+        <h2><i class="fas fa-book"></i> Humanities Courses (3 Years)</h2>
+      </div>
+      <div class="domain-content">
+        <div class="courses">
+          <div class="course"><a href="ad.html">Advertising <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="gen.html">BA - General <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="cri.html">Criminology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="eco.html">Economics <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="fine.html">Fine Arts <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="for.html">Foreign Languages <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="home.html">Home Science <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="int.html">Interior Design <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="jou.html">Journalism <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="lib.html">Library Sciences <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="pt.html">Physical Education <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="pol.html">Political Science <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="psy.html">Psychology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="soc.html">Social Work <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="soci.html">Sociology <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="travel.html">Travel & Tourism <i class="fas fa-chevron-right"></i></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="domain">
+      <div class="domain-header">
+        <h2><i class="fas fa-briefcase"></i> Management Courses (3 Years)</h2>
+      </div>
+      <div class="domain-content">
+        <div class="courses">
+          <div class="course"><a href="bus.html">Business Management <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bank.html">Bank Management <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="event.html">Event Management <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="hosp.html">Hospital Management <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="hot.html">Hotel Management <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="hum.html">Human Resource Management <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="log.html">Logistics & Supply Chain <i class="fas fa-chevron-right"></i></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="domain">
+      <div class="domain-header">
+        <h2><i class="fas fa-chart-line"></i> Commerce Courses (3 Years)</h2>
+      </div>
+      <div class="domain-content">
+        <div class="courses">
+          <div class="course"><a href="reg.html">B.Com - Regular <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="taxation.html">B.Com - Taxation <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="prof.html">B.Com - Professional <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bankmanagement.html">B.Com - Bank Management <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bctt.html">B.Com - Travel & Tourism <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bfm.html">BFM - Financial Markets <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="bms.html">BMS - Management Studies <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="baf.html">BAF - Accounting & Finance <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="csb.html">Certified Stock Broker <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="cfa.html">Certified Financial Analyst <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="cfp.html">Certified Financial Planner <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="cib.html">Certified Investment Banker <i class="fas fa-chevron-right"></i></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="domain">
+      <div class="domain-header">
+        <h2><i class="fas fa-flask"></i> B.Sc Courses (3 Years)</h2>
+      </div>
+      <div class="domain-content">
+        <div class="courses">
+          <div class="course"><a href="pcm.html">Physics, Chemistry, Math (PCM) <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="cbz.html">Chemistry, Botany, Zoology (CBZ) <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="csbs.html">Computer Science <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="agribs.html">Agriculture <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="horti.html">Horticulture <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="forest.html">Forestry <i class="fas fa-chevron-right"></i></a></div>
+          <div class="course"><a href="seri.html">Sericulture <i class="fas fa-chevron-right"></i></a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Search functionality
+    document.getElementById('search-box').addEventListener('keyup', function() {
+      const searchTerm = this.value.toLowerCase();
+      const courses = document.querySelectorAll('.course');
+      
+      courses.forEach(course => {
+        const courseText = course.textContent.toLowerCase();
+        if (courseText.includes(searchTerm)) {
+          course.style.display = '';
+        } else {
+          course.style.display = 'none';
+        }
+      });
+      
+      // Show/hide section headers based on if they have visible courses
+      document.querySelectorAll('.domain').forEach(domain => {
+        const hasVisibleCourses = Array.from(domain.querySelectorAll('.course')).some(course => 
+          course.style.display !== 'none');
+        domain.style.display = hasVisibleCourses ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

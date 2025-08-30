@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CareerBot Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" href="4712109.png">
+  <style>
+    :root {
+      --primary: #3a7bd5;
+      --primary-dark: #2d62ac;
+      --secondary: #00c6ff;
+      --dark: #1c2331;
+      --light: #f8f9fa;
+      --gray: #6c757d;
+      --success: #28a745;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #2c3e50, #4a69bd);
+      background-size: cover;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .login-container {
+      position: relative;
+      z-index: 2;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 25px;
+    }
+
+    .logo {
+      width: 60px;
+      height: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      margin-bottom: 30px;
+      color: var(--gray);
+    }
+
+    .divider {
+      width: 50px;
+      height: 4px;
+      background: var(--primary);
+      margin: 0 auto 30px;
+      border-radius: 2px;
+    }
+
+    .input-group {
+      margin: 20px 0;
+      text-align: left;
+      position: relative;
+    }
+
+    .input-group label {
+      color: var(--dark);
+      font-weight: 500;
+      margin-bottom: 8px;
+      display: block;
+      font-size: 14px;
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 14px;
+      top: 38px;
+      color: var(--gray);
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 14px 14px 14px 42px;
+      border: 1px solid #e1e5eb;
+      border-radius: 8px;
+      background-color: white;
+      color: var(--dark);
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(58, 123, 213, 0.1);
+    }
+
+    .input-field::placeholder {
+      color: #adb5bd;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .checkbox-group label {
+      color: var(--gray);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .login-btn {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      width: 100%;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .login-btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--secondary));
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .login-btn:active {
+      transform: translateY(0);
+    }
+
+    .footer-text {
+      margin-top: 25px;
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    .footer-text a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.2s ease;
+    }
+
+    .footer-text a:hover {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo-container">
+      <img src="4712109.png" alt="CareerBot Logo" class="logo" />
+    </div>
+    
+    <h1>Welcome to CareerBot</h1>
+    <p class="subtitle">Your AI-Powered Career Guide Assistant</p>
+    <div class="divider"></div>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="email">Email Address</label>
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="email" name="email" class="input-field" placeholder="Enter your email" required />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <i class="fas fa-lock"></i>
+        <input type="password" id="password" name="password" class="input-field" placeholder="Enter your password" required />
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="showPassword" onclick="togglePassword()">
+        <label for="showPassword">Show Password</label>
+      </div>
+
+      <button type="submit" class="login-btn">Sign In</button>
+    </form>
+
+    <div class="footer-text">
+      Don't have an account? <a href="signup.html">Create Account</a>
+    </div>
+  </div>
+
+  <!-- <script>
+    // Hardcoded user credentials (for demo/testing only)
+    const userCredentials = {
+      email: "user@example.com",
+      password: "careerbot123"
+    };
+  
+    function togglePassword() {
+      const passwordInput = document.getElementById("password");
+      passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+    }
+  
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+  
+      const emailInput = document.getElementById("email").value.trim();
+      const passwordInput = document.getElementById("password").value;
+  
+      if (emailInput === userCredentials.email && passwordInput === userCredentials.password) {
+        // Successful login - redirect
+        window.location.href = "welcome.html";
+      } else {
+        // Failed login - show error
+        alert("Invalid email or password. Please try again.");
+      }
+    });
+  </script> -->
+
+  <script>
+    // Default hardcoded credential
+    const defaultUser = {
+      email: "user@example.com",
+      password: "careerbot123"
+    };
+  
+    // Initialize with default if nothing exists
+    if (!localStorage.getItem("users")) {
+      localStorage.setItem("users", JSON.stringify([defaultUser]));
+    }
+  
+    function togglePassword() {
+      const passwordInput = document.getElementById("password");
+      passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+    }
+  
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+  
+      const emailInput = document.getElementById("email").value.trim();
+      const passwordInput = document.getElementById("password").value;
+  
+      const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+  
+      const matchedUser = storedUsers.find(user => user.email === emailInput && user.password === passwordInput);
+  
+      if (matchedUser) {
+        window.location.href = "welcome.html";
+      } else {
+        alert("Invalid email or password.");
+      }
+    });
+  </script>
+  
+  
+</body>
+</html>

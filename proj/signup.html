@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CareerBot - Sign Up</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #3a7bd5;
+      --primary-dark: #2d62ac;
+      --secondary: #00c6ff;
+      --dark: #1c2331;
+      --light: #f8f9fa;
+      --gray: #6c757d;
+      --success: #28a745;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #2c3e50, #4a69bd);
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .login-container {
+      position: relative;
+      z-index: 2;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 25px;
+    }
+
+    .logo {
+      width: 60px;
+      height: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      margin-bottom: 30px;
+      color: var(--gray);
+    }
+
+    .divider {
+      width: 50px;
+      height: 4px;
+      background: var(--primary);
+      margin: 0 auto 30px;
+      border-radius: 2px;
+    }
+
+    .input-group {
+      margin: 20px 0;
+      text-align: left;
+      position: relative;
+    }
+
+    .input-group label {
+      color: var(--dark);
+      font-weight: 500;
+      margin-bottom: 8px;
+      display: block;
+      font-size: 14px;
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 14px;
+      top: 38px;
+      color: var(--gray);
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 14px 14px 14px 42px;
+      border: 1px solid #e1e5eb;
+      border-radius: 8px;
+      background-color: white;
+      color: var(--dark);
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(58, 123, 213, 0.1);
+    }
+
+    .input-field::placeholder {
+      color: #adb5bd;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .checkbox-group label {
+      color: var(--gray);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .signup-btn {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      width: 100%;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .signup-btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--secondary));
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .signup-btn:active {
+      transform: translateY(0);
+    }
+
+    .footer-text {
+      margin-top: 25px;
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    .footer-text a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.2s ease;
+    }
+
+    .footer-text a:hover {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+
+    .success-message {
+      display: none;
+      color: var(--success);
+      margin-top: 15px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo-container">
+      <img src="4712109.png" alt="CareerBot Logo" class="logo" />
+    </div>
+    
+    <h1>Create Your Account</h1>
+    <p class="subtitle">Join CareerBot - Your AI-Powered Career Guide</p>
+    <div class="divider"></div>
+
+    <!-- <form id="signupForm">
+      <div class="input-group">
+        <label for="new-email">Email Address</label>
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="new-email" name="email" class="input-field" placeholder="Enter your email" required />
+      </div>
+
+      <div class="input-group">
+        <label for="new-password">Password</label>
+        <i class="fas fa-lock"></i>
+        <input type="password" id="new-password" name="password" class="input-field" placeholder="Enter your password" required />
+      </div>
+
+      <div class="input-group">
+        <label for="confirm-password">Confirm Password</label>
+        <i class="fas fa-lock"></i>
+        <input type="password" id="confirm-password" name="confirm-password" class="input-field" placeholder="Confirm your password" required />
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
+        <label for="showPassword">Show Password</label>
+      </div>
+
+      <button type="submit" class="signup-btn">Create Account</button>
+    </form> -->
+
+    <form id="signupForm">
+      <div class="input-group">
+        <label for="name">Full Name</label>
+        <i class="fas fa-user"></i>
+        <input type="text" id="name" name="name" class="input-field" placeholder="Enter your full name" required />
+      </div>
+    
+      <div class="input-group">
+        <label for="new-email">Email Address</label>
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="new-email" name="email" class="input-field" placeholder="Enter your email" required />
+      </div>
+    
+      <div class="input-group">
+        <label for="new-password">Password</label>
+        <i class="fas fa-lock"></i>
+        <input type="password" id="new-password" name="password" class="input-field" placeholder="Enter your password" required />
+      </div>
+    
+      <div class="input-group">
+        <label for="confirm-password">Confirm Password</label>
+        <i class="fas fa-lock"></i>
+        <input type="password" id="confirm-password" name="confirm-password" class="input-field" placeholder="Confirm your password" required />
+      </div>
+    
+      <div class="checkbox-group">
+        <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
+        <label for="showPassword">Show Password</label>
+      </div>
+    
+      <button type="submit" class="signup-btn">Create Account</button>
+    </form>
+    
+
+    <div id="successMessage" class="success-message">
+      Account created successfully!
+    </div>
+
+    <div class="footer-text">
+      Already have an account? <a href="index.html">Sign In</a>
+    </div>
+  </div>
+
+  <!-- <script>
+    function togglePasswordVisibility() {
+      const passwordFields = [
+        document.getElementById("new-password"),
+        document.getElementById("confirm-password")
+      ];
+  
+      passwordFields.forEach(field => {
+        field.type = field.type === "password" ? "text" : "password";
+      });
+    }
+  
+    document.getElementById("signupForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+  
+      const email = document.getElementById("new-email").value.trim();
+      const password = document.getElementById("new-password").value;
+      const confirmPassword = document.getElementById("confirm-password").value;
+  
+      if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+  
+      if (!email || !password || !confirmPassword) {
+        alert("Please fill in all fields.");
+        return;
+      }
+  
+      // Get existing users or initialize with default
+      const defaultUser = { email: "user@example.com", password: "careerbot123" };
+      let users = JSON.parse(localStorage.getItem("users")) || [defaultUser];
+  
+      const existingUser = users.find(user => user.email === email);
+      if (existingUser) {
+        alert("An account with this email already exists.");
+        return;
+      }
+  
+      // Add new user to storage
+      users.push({ email, password });
+      localStorage.setItem("users", JSON.stringify(users));
+  
+      // Show success message and redirect
+      const successMessage = document.getElementById("successMessage");
+      successMessage.style.display = "block";
+  
+      setTimeout(() => {
+        window.location.replace("index.html"); // back to login
+      }, 2000);
+    });
+  </script> -->
+
+  <script>
+    // Toggle visibility of password fields
+    function togglePasswordVisibility() {
+      const passwordFields = [
+        document.getElementById("new-password"),
+        document.getElementById("confirm-password")
+      ];
+  
+      passwordFields.forEach(field => {
+        field.type = field.type === "password" ? "text" : "password";
+      });
+    }
+  
+    // Form submission and validation
+    document.getElementById("signupForm").addEventListener("submit", function(e) {
+      e.preventDefault(); // Prevent form from submitting the normal way
+  
+      // Get values from form fields
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("new-email").value.trim();
+      const password = document.getElementById("new-password").value;
+      const confirmPassword = document.getElementById("confirm-password").value;
+  
+      // Validate all fields are filled
+      if (!name || !email || !password || !confirmPassword) {
+        alert("Please fill in all fields.");
+        return;
+      }
+  
+      // Check password match
+      if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+  
+      // Get existing users from localStorage or initialize with default user
+      const defaultUser = {
+        name: "Demo User",
+        email: "user@example.com",
+        password: "careerbot123"
+      };
+  
+      let users = JSON.parse(localStorage.getItem("users")) || [defaultUser];
+  
+      // Check if email already exists
+      const existingUser = users.find(user => user.email === email);
+      if (existingUser) {
+        alert("An account with this email already exists.");
+        return;
+      }
+  
+      // Add new user to the list and save to localStorage
+      users.push({ name, email, password });
+      localStorage.setItem("users", JSON.stringify(users));
+  
+      // Show success message
+      const successMessage = document.getElementById("successMessage");
+      successMessage.style.display = "block";
+  
+      // Redirect to login page after 2 seconds
+      setTimeout(() => {
+        window.location.replace("index.html"); // Go back to login
+      }, 2000);
+    });
+  </script>
+  
+  
+</body>
+</html>

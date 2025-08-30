@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CareerBot - Chat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #ffffff;
+      color: #1f2937;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border-bottom: 2px solid #e2e8f0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    header h1 {
+      background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+
+    .main {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 280px;
+      background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+      border-right: 2px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      gap: 12px;
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .admin-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .admin-profile img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid #4f46e5;
+      object-fit: cover;
+    }
+
+    .admin-profile span {
+      font-weight: 600;
+      color: #1f2937;
+      font-size: 0.95rem;
+    }
+
+    .sidebar-button {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: left;
+      margin-bottom: 8px;
+    }
+
+    .gradient-blue {
+      background: linear-gradient(to right, #4f46e5, #06b6d4);
+      color: white;
+    }
+
+    .gradient-blue:hover {
+      background: linear-gradient(to right, #3730a3, #0891b2);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .gradient-blue .emoji {
+      font-size: 1.3rem;
+      width: 24px;
+      text-align: center;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .gradient-blue:hover .emoji {
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    .gradient-red {
+      background: linear-gradient(45deg, #ff512f, #dd2476, #ff0844);
+      color: white;
+    }
+
+    .gradient-red:hover {
+      background: linear-gradient(45deg, #e6482a, #c72068, #e6073c);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .gradient-red .emoji {
+      font-size: 1.3rem;
+      width: 24px;
+      text-align: center;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .gradient-red:hover .emoji {
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    .sidebar-button:active {
+      transform: scale(0.98);
+    }
+
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      position: relative;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      scrollbar-width: thin;
+      scrollbar-color: #4f46e5 #f3f4f6;
+      margin-bottom: 20px;
+    }
+
+    .chat-messages::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: #4f46e5;
+      border-radius: 10px;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb:hover {
+      background: #3730a3;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 16px 20px;
+      border-radius: 18px;
+      line-height: 1.7;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      position: relative;
+      font-size: 0.95rem;
+      word-wrap: break-word;
+      text-align: left;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .message:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .bot {
+      align-self: flex-start;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      color: #1f2937;
+      border-top-left-radius: 4px;
+      margin-right: auto;
+      border-left: 4px solid #4f46e5;
+    }
+
+    .user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+      color: white;
+      border-bottom-right-radius: 4px;
+      border-right: 4px solid #3730a3;
+    }
+
+    .chat-input {
+      display: flex;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      border: 2px solid #e2e8f0;
+      margin-top: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .chat-input:focus-within {
+      border-color: #4f46e5;
+      box-shadow: 0 8px 30px rgba(79, 70, 229, 0.15);
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 15px;
+      outline: none;
+      font-size: 1rem;
+      color: #1f2937;
+      background: transparent;
+      font-weight: 500;
+    }
+
+    .chat-input input::placeholder {
+      color: #6b7280;
+    }
+
+    .chat-input button {
+      background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+
+    .chat-input button:hover {
+      background: linear-gradient(135deg, #3730a3 0%, #4f46e5 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 3px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .sidebar-button {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .sidebar-button:hover {
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .recording {
+      animation: pulse 1.5s infinite;
+      background: linear-gradient(to right, #ef4444, #dc2626) !important;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(0.98);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .recording i {
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* Typing Animation */
+    .typing-dots {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .typing-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4f46e5;
+      animation: typing 1.4s infinite ease-in-out;
+    }
+
+    .typing-dots span:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+
+    .typing-dots span:nth-child(2) {
+      animation-delay: -0.16s;
+    }
+
+    @keyframes typing {
+      0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+      }
+      40% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Message animations */
+    .message {
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CareerBot</h1>
+  </header>
+
+  <div class="main">
+    <div class="sidebar">
+      <div class="admin-profile">
+        <img src="admin.png" alt="Admin" />
+        <span>Admin</span>
+      </div>
+
+      <button class="sidebar-button gradient-blue" onclick="newChat()">
+        <span class="emoji">💼</span> New Chat
+      </button>
+
+      <button class="sidebar-button gradient-blue" onclick="startVoiceTyping()">
+        <span class="emoji">🎤</span> Voice Chat
+      </button>
+
+      <button class="sidebar-button gradient-blue" onclick="goBack()">
+        <span class="emoji">⬅️</span> Back
+      </button>
+
+      <button class="sidebar-button gradient-blue" onclick="openSettings()">
+        <span class="emoji">🔧</span> Settings
+      </button>
+    </div>
+
+    <div class="chat-container">
+      <div class="chat-messages" id="chat">
+        <div class="message bot">
+          <div>
+            🤖 <br>
+            Hi, I'm your CareerBot assistant. I'll be helping you with career guidance. If you want to know anything beyond that, I'll also help you with that. Feel free to ask me anything! It may be out of education, also I'll be helping you with that.
+          </div>
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="messageInput" placeholder="Type your message..." />
+        <button onclick="sendMessage()">
+          <i class="fas fa-paper-plane"></i> Send
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Chat Functionality
+    const messageInput = document.getElementById("messageInput");
+  
+    messageInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") sendMessage();
+    });
+  
+    async function sendMessage(message = null) {
+      const chat = document.getElementById("chat");
+      const input = document.getElementById("messageInput");
+    
+      const msg = message || input.value.trim();
+      if (!msg) return;
+    
+      input.value = "";
+    
+      const userMsg = document.createElement("div");
+      userMsg.className = "message user";
+      userMsg.textContent = msg;
+      chat.appendChild(userMsg);
+    
+      const typingIndicator = document.createElement("div");
+      typingIndicator.className = "message bot typing";
+      typingIndicator.innerHTML = `
+        <div class="typing-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div style="margin-top: 8px; color: #6b7280; font-size: 0.9rem;">CareerBot is typing...</div>
+      `;
+      chat.appendChild(typingIndicator);
+    
+      chat.scrollTop = chat.scrollHeight;
+    
+      try {
+        const response = await fetch("http://localhost:5000/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: msg }),
+        });
+    
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    
+        const data = await response.json();
+    
+        typingIndicator.remove();
+    
+        const botReply = document.createElement("div");
+        botReply.className = "message bot";
+        
+        // Format the reply preserving line breaks to avoid breaking numbered lists
+        let formattedReply = data.reply
+          // Remove markdown formatting
+          .replace(/\*\*(.*?)\*\*/g, '$1')
+          .replace(/\*(.*?)\*/g, '$1')
+          .replace(/__(.*?)__/g, '$1')
+          .replace(/_(.*?)_/g, '$1')
+          // Normalize Windows newlines
+          .replace(/\r\n/g, '\n')
+          // Trim trailing spaces on each line
+          .split('\n')
+          .map(line => line.trimEnd())
+          .join('\n')
+          // Ensure numbered list items start on a new line if they follow a period
+          .replace(/\.\s+(\d+)\./g, '.<br>$1.')
+          // Convert double newlines to paragraph breaks
+          .replace(/\n\n+/g, '<br><br>')
+          // Convert single newlines to line breaks
+          .replace(/(?<!>)\n/g, '<br>');
+        
+        botReply.innerHTML = `🤖 <br>${formattedReply}`;
+        chat.appendChild(botReply);
+    
+        chat.scrollTop = chat.scrollHeight;
+      } catch (error) {
+        typingIndicator.remove();
+    
+        const errorReply = document.createElement("div");
+        errorReply.className = "message bot";
+        errorReply.textContent = "⚠️ Sorry, something went wrong. Please try again.";
+        chat.appendChild(errorReply);
+    
+        console.error("Chat error:", error);
+      }
+    }
+  
+    function newChat() {
+      document.getElementById("chat").innerHTML = `
+        <div class="message bot">
+          🤖 <br>
+          Hi, I'm CareerBot. I'm here to assist you related career guidance. If you want to know anything beyond that, I'll also help. You can ask me anything! It may be out of education also I'll be helping you with that.
+        </div>
+      `;
+    }
+  
+    function loadHistory() {
+      alert("History feature coming soon!");
+    }
+  
+    function signOut() {
+      window.location.href = "login.html";
+    }
+  
+    function goBack() {
+      window.location.href = "welcome.html";
+    }
+  
+    // Voice Typing Functionality
+    let recognition = null;
+    let isRecording = false;
+
+    function startVoiceTyping() {
+      const voiceButton = document.querySelector('[onclick="startVoiceTyping()"]');
+      
+      if (isRecording) {
+        // Stop recording
+        if (recognition) {
+          recognition.stop();
+          recognition = null;
+        }
+        voiceButton.classList.remove('recording');
+        voiceButton.innerHTML = '<span class="emoji">🎤</span> Voice Chat';
+        isRecording = false;
+        return;
+      }
+
+      if (!("SpeechRecognition" in window || "webkitSpeechRecognition" in window)) {
+        alert("Speech recognition not supported in this browser.");
+        return;
+      }
+
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onstart = function() {
+        console.log("Voice recognition started...");
+        voiceButton.classList.add('recording');
+        voiceButton.innerHTML = '<span class="emoji">🎤</span> Recording...';
+        isRecording = true;
+      };
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        sendMessage(transcript);
+        // Stop recording after getting result
+        recognition.stop();
+        voiceButton.classList.remove('recording');
+        voiceButton.innerHTML = '<span class="emoji">🎤</span> Voice Chat';
+        isRecording = false;
+      };
+
+      recognition.onerror = function(event) {
+        console.error("Voice recognition error:", event.error);
+        alert("Voice recognition error: " + event.error);
+        voiceButton.classList.remove('recording');
+        voiceButton.innerHTML = '<span class="emoji">🎤</span> Voice Chat';
+        isRecording = false;
+      };
+
+      recognition.onend = function() {
+        console.log("Voice recognition ended.");
+        if (isRecording) {  // If still recording when ended
+          voiceButton.classList.remove('recording');
+          voiceButton.innerHTML = '<span class="emoji">🎤</span> Voice Chat';
+          isRecording = false;
+        }
+      };
+
+      recognition.start();
+    }
+
+    // Add event listener for page unload to cleanup
+    window.addEventListener('beforeunload', function() {
+      if (recognition) {
+        recognition.stop();
+      }
+    });
+  
+    // User Profile Handling
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const currentUser = users[users.length - 1];  // Assuming the last user is the current one
+  
+    // Function to display user profile
+    function displayUserProfile() {
+      const profileName = currentUser ? currentUser.name : 'Admin';
+      const profileImage = "admin.png";  // You can use the same image or a personalized one
+  
+      // Update profile name in sidebar
+      document.querySelector('.admin-profile span').textContent = profileName;
+  
+      // Optionally update the profile image
+      document.querySelector('.admin-profile img').setAttribute('src', profileImage);
+    }
+  
+    // Call the functions on page load
+    window.onload = function() {
+      displayUserProfile(); // Display user info in sidebar
+    };
+
+    function openSettings() {
+      window.location.href = "settings.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cutoff Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #3a7bd5;
+      --secondary: #00c6ff;
+      --dark: #1c2331;
+      --light: #f8f9fa;
+      --gray: #6c757d;
+      --gradient: linear-gradient(to right, #ff6a00, #ee0979);
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #2c3e50, #4a69bd);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: white;
+      border-radius: 10px;
+      padding: 40px 30px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--dark);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #2d62ac, var(--secondary));
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--dark);
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .back-section {
+      margin-top: 20px;
+      text-align: center;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+    }
+
+    .back-button {
+      display: inline-block;
+      padding: 8px 20px;
+      background: white;
+      color: var(--primary);
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      border: 1.5px solid var(--primary);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      width: auto;
+    }
+
+    .back-button:hover {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Cutoff Calculator</h1>
+
+    <label for="stream">Select Stream</label>
+    <select id="stream" onchange="updateSubjects()">
+      <option value="engineering">Engineering</option>
+      <option value="medical">Veterinary (Medical)</option>
+      <option value="agriculture">Agriculture</option>
+      <option value="paramedical">Paramedical</option>
+      <option value="pure-paramedical">Paramedical (Pure Science)</option>
+    </select>
+
+    <div id="marks-container">
+      <div id="maths-section">
+        <label for="maths">Maths Marks</label>
+        <input type="number" id="maths" min="0" max="100" placeholder="Enter Maths marks">
+      </div>
+
+      <label for="physics">Physics Marks</label>
+      <input type="number" id="physics" min="0" max="100" placeholder="Enter Physics marks">
+
+      <label for="chemistry">Chemistry Marks</label>
+      <input type="number" id="chemistry" min="0" max="100" placeholder="Enter Chemistry marks">
+
+      <div id="bio-section" class="hidden">
+        <label for="biology">Biology Marks</label>
+        <input type="number" id="biology" min="0" max="100" placeholder="Enter Biology marks">
+      </div>
+
+      <div id="pure-section" class="hidden">
+        <label for="botany">Botany Marks</label>
+        <input type="number" id="botany" min="0" max="100" placeholder="Enter Botany marks">
+
+        <label for="zoology">Zoology Marks</label>
+        <input type="number" id="zoology" min="0" max="100" placeholder="Enter Zoology marks">
+      </div>
+    </div>
+
+    <button onclick="calculateCutoff()">Calculate Cutoff</button>
+
+    <div class="result" id="result"></div>
+
+    <div class="back-section">
+      <button class="back-button" onclick="location.href='welcome.html'">
+        Back
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function updateSubjects() {
+      const stream = document.getElementById('stream').value;
+      const bioSection = document.getElementById('bio-section');
+      const pureSection = document.getElementById('pure-section');
+      const mathsSection = document.getElementById('maths-section');
+
+      if (stream === 'medical' || stream === 'paramedical' || stream === 'agriculture') {
+        bioSection.classList.remove('hidden');
+      } else {
+        bioSection.classList.add('hidden');
+      }
+
+      if (stream === 'pure-paramedical') {
+        pureSection.classList.remove('hidden');
+      } else {
+        pureSection.classList.add('hidden');
+      }
+
+      // Show Maths only for Engineering
+      if (stream === 'engineering') {
+        mathsSection.classList.remove('hidden');
+      } else {
+        mathsSection.classList.add('hidden');
+      }
+    }
+
+    function calculateCutoff() {
+      const stream = document.getElementById('stream').value;
+      const maths = parseFloat(document.getElementById('maths').value) || 0;
+      const physics = parseFloat(document.getElementById('physics').value) || 0;
+      const chemistry = parseFloat(document.getElementById('chemistry').value) || 0;
+      const biology = parseFloat(document.getElementById('biology').value) || 0;
+      const botany = parseFloat(document.getElementById('botany').value) || 0;
+      const zoology = parseFloat(document.getElementById('zoology').value) || 0;
+
+      let cutoff = 0;
+      let total = 100;
+
+      if (stream === 'engineering') {
+        cutoff = maths + (physics / 2) + (chemistry / 2);
+        total = 200;
+      } else if (stream === 'medical') {
+        cutoff = (biology / 2) + (physics / 4) + (chemistry / 4);
+      } else if (stream === 'agriculture') {
+        // Agriculture: Biology full + Physics half + Chemistry half; total 200
+        cutoff = biology + (physics / 2) + (chemistry / 2);
+        total = 200;
+      } else if (stream === 'paramedical') {
+        cutoff = (maths + physics + chemistry + biology) / 4;
+      } else if (stream === 'pure-paramedical') {
+        cutoff = (botany + zoology + chemistry + physics) / 4;
+      }
+
+      const formattedStream = stream.replace('-', ' ').replace(/\b\w/g, c => c.toUpperCase());
+      document.getElementById('result').innerText = `Your ${formattedStream} Cutoff: ${cutoff.toFixed(2)} / ${total}`;
+    }
+
+    // Call updateSubjects on page load to set initial back button text
+    document.addEventListener('DOMContentLoaded', updateSubjects);
+  </script>
+</body>
+</html>
